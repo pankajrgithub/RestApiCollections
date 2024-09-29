@@ -1,0 +1,414 @@
+{
+	"info": {
+		"_postman_id": "83ab1d9e-4083-4567-8d6a-faddddcbfa86",
+		"name": "RestApi's",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7916714",
+		"_collection_link": "https://grey-resonance-572147.postman.co/workspace/MyDemoRestAPI's~9a2723cd-f1df-4fae-9da8-76a7b043023b/collection/7916714-83ab1d9e-4083-4567-8d6a-faddddcbfa86?action=share&source=collection_link&creator=7916714"
+	},
+	"item": [
+		{
+			"name": "GetUserList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"page number validation\"]=responseBody.has(\"2\");\r",
+							"tests[\"status code\"]=responseCode.code==\"200\";\r",
+							"\r",
+							"var response=JSON.parse(responseBody);\r",
+							"tests[\"validation page\"]=response.data[0].email==\"michael.lawson@reqres.in\";"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ad042352-bd87-45d4-beee-1e7c2abd95f4.mock.pstmn.io",
+					"protocol": "https",
+					"host": [
+						"ad042352-bd87-45d4-beee-1e7c2abd95f4",
+						"mock",
+						"pstmn",
+						"io"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetUserList",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\"id\": 1,\n\"email\": \"george.bluth@reqres.in\",\n\"first_name\": \"George\",\n\"last_name\": \"Bluth\",\n\"avatar\": \"https://reqres.in/img/faces/1-image.jpg\"\n}"
+				}
+			]
+		},
+		{
+			"name": "GetUserListArray",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let myArray = JSON.parse(pm.environment.get(\"myArray\"));\r",
+							"let index = parseInt(pm.environment.get(\"index\"));\r",
+							"\r",
+							"// Logging to debug current index and array\r",
+							"console.log(\"Test - Current Index:\", index);\r",
+							"console.log(\"Test - Array Length:\", myArray.length);\r",
+							"console.log(\"Test - Current Value from Array:\", myArray[index]);\r",
+							"\r",
+							"// Check if the current index is within the array length\r",
+							"if (index < myArray.length - 1) {\r",
+							"    // Increment the index\r",
+							"    index += 1;\r",
+							"    pm.environment.set(\"index\", index);  // Save the updated index\r",
+							"    console.log(\"Test - Updated Index:\", index);  // Log the updated index\r",
+							"\r",
+							"    // Set next request to re-run the current request\r",
+							"    pm.execution.setNextRequest(\"GetUserListArray\");  // Ensure the request name is correct\r",
+							"} else {\r",
+							"    // If all values are processed, log completion and clear environment variables\r",
+							"    console.log(\"Array iteration complete\");\r",
+							"    pm.environment.unset(\"myArray\");  // Clear array when done\r",
+							"    pm.environment.unset(\"index\");    // Clear index when done\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Initialize the array and set the initial index if not already set",
+							"if (!pm.environment.get(\"myArray\")) {",
+							"    let myArray = [1, 2, 3, 4, 5];",
+							"    pm.environment.set(\"myArray\", JSON.stringify(myArray));",
+							"    pm.environment.set(\"index\", 0); // Start index at 0",
+							"}",
+							"",
+							"// Get the array and index from the environment",
+							"let myArray = JSON.parse(pm.environment.get(\"myArray\"));",
+							"let index = parseInt(pm.environment.get(\"index\"));",
+							"",
+							"// Set the current value from the array for use in the request",
+							"let currentValue = myArray[index];",
+							"pm.environment.set(\"currentValue\", currentValue);",
+							"",
+							"console.log(\"Pre-request - Current Index:\", index);",
+							"console.log(\"Pre-request - Array Length:\", myArray.length);",
+							"console.log(\"Pre-request - Current Value from Array:\", currentValue);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{currentValue}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://034ede74-4ce3-486f-94d0-68a25e6bd644.mock.pstmn.io/users?id={{currentValue}}",
+					"protocol": "https",
+					"host": [
+						"034ede74-4ce3-486f-94d0-68a25e6bd644",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{currentValue}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSingleUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"check content-type header:\",function()\r",
+							"{\r",
+							"    pm.response.to.be.header(\"content-type\",\"application/json; charset=utf-8\");\r",
+							"}\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/12",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSingleUserNotFound",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/23",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetListResource",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/unknown",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"unknown"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostCreateUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateSingleUser",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"zion resident\",\r\n    \"id\": \"678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteRecord",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/12",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"wetest\",\"salary\":\"123\",\"age\":\"23\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dummy.restapiexample.com/api/v1/create",
+					"protocol": "http",
+					"host": [
+						"dummy",
+						"restapiexample",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"create"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.globals.set(\"url\", \"https://reqres.in/api\");",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": ""
+		}
+	]
+}
